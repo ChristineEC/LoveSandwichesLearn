@@ -76,7 +76,7 @@ def calculate_surplus_data(sales_row):
     - Negative surplus indicates extra stock made when stock was sold out.
     """
     print("Calculating surplus data")
-    stock = SHEET.worksheet('surplus').get_all_values()
+    stock = SHEET.worksheet('stock').get_all_values()
     stock_row = stock[-1]
     
     surplus_data = []
@@ -85,9 +85,14 @@ def calculate_surplus_data(sales_row):
         surplus_data.append(surplus)
     return surplus_data
 
-
-
-
+def update_surplus_worksheet(data):
+    """
+      Update surplus worksheet, add new row with the list data provided.
+    """
+    print("Updating surplus worksheet. \n")
+    surplus_worksheet = SHEET.worksheet('surplus')
+    surplus_worksheet.append_row(data)
+    print("Surplus worksheet updated successfully.\n")
 
 def main():
     """
@@ -98,6 +103,7 @@ def main():
     update_sales_worksheet(sales_data)
     new_surplus_data = calculate_surplus_data(sales_data)
     print(new_surplus_data)
+    update_surplus_worksheet(new_surplus_data)
 
 
 print("Welcome to Love Sandwiches Data Automation")
