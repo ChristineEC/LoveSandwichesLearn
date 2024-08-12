@@ -35,7 +35,7 @@ def get_sales_data():
         sales_data = data_str.split(",")
         
         if validate_data(sales_data):
-            print("Data is valid!")
+            print("Data is valid! \n")
             break
 
     return sales_data
@@ -50,10 +50,10 @@ def validate_data(values):
         [int(value) for value in values]
         if len(values) != 6:
             raise ValueError(
-                f"Exactly 6 values required, you provided {len(values)}"
+                f"Exactly 6 values required, you provided {len(values)} \n"
             )
     except ValueError as e:
-        print(f'Invalid data: {e}, please try again')
+        print(f'Invalid data: {e}, please try again \n')
         return False
 
     return True
@@ -95,7 +95,7 @@ def calculate_surplus_data(sales_row):
     - Positive surplus indicates waste.
     - Negative surplus indicates extra stock made when stock was sold out.
     """
-    print("Calculating surplus data")
+    print("Calculating surplus data \n")
     stock = SHEET.worksheet('stock').get_all_values()
     stock_row = stock[-1]
     
@@ -105,7 +105,19 @@ def calculate_surplus_data(sales_row):
         surplus_data.append(surplus)
     return surplus_data
 
+def get_last_5_entries_sales():
+    """
+    Collects columns of data from sales worksheet, collecting
+    the last 5 entries for each sandwich and return the data as
+    a list of lists.
+    """
+    sales= SHEET.worksheet('sales')
 
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    return columns
 
 def main():
     """
@@ -118,6 +130,9 @@ def main():
     update_worksheet(new_surplus_data, "surplus")
 
 
-print("Welcome to Love Sandwiches Data Automation")
-main()
+print("Welcome to Love Sandwiches Data Automation \n")
+# main()
+
+sales_columns = get_last_5_entries_sales()
+
 
